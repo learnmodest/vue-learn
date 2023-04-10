@@ -1,54 +1,56 @@
 <template>
   <div id="app">
-    <h1>To-Do List</h1>
-    <to-do-form @todo-added="addToDo"></to-do-form>
-    <h2 id="list-finished">{{listFinished}}</h2>
+    <h1>Pig Ground</h1>
+    <add-pig @pig-add="addPig"></add-pig>
+    <h2 id="list-eatting">{{listEatting}}</h2>
     <ul aria-labelledby="list-finished" class="stack-large">
-      <li v-for="item in ToDoItems" :key="item.id">
-        <to-do-item :label=item.label :done=item.done :id=item.id @checkbox-changed="updateDoneStatus(item.id)"></to-do-item> 
+      <li v-for="littlePig in Pigs" :key="littlePig.id">
+        <one-pig :selfIntroduce=littlePig.selfIntroduce :eat=littlePig.eat :id=littlePig.id @checkbox-changed="updateEatStatus(littlePig.id)"></one-pig> 
+        <button class="btn" @click="Pigs.pop(littlePig)">Sell</button>
       </li>
     </ul>
   </div>
 </template>
 
 <script>
-import ToDoItem from './components/ToDoItem'
-import ToDoForm from './components/ToDoForm'
+import OnePig from './components/OnePig'
+import AddPig from './components/AddPig'
 import uniqueId from "lodash.uniqueid";
 
 export default {
   name: 'App',
   components: {
-    ToDoItem,
-    ToDoForm
+    OnePig,
+    AddPig
   },
   data() {
     return {
-      ToDoItems: [
-        { id: uniqueId("todo-"), label: "Learn Vue", done: false },
+      Pigs: [
+        { id: uniqueId("pig-"), selfIntroduce: "I'm a happy little pig", eat: false },
         {
-          id: uniqueId("todo-"),
-          label: "Create a Vue project with the CLI",
-          done: true,
+          id: uniqueId("pig-"),
+          selfIntroduce: "I'm a strong little pig",
+          eat: true,
         },
-        { id: uniqueId("todo-"), label: "Have fun", done: true },
-        { id: uniqueId("todo-"), label: "Create a to-do list", done: false },
+        { id: uniqueId("pig-"), selfIntroduce: "I'm a fat little pig", eat: true },
+        { id: uniqueId("pig-"), selfIntroduce: "I'm a beautiful little pig", eat: false },
       ],
     }
   },
   methods: {
-    addToDo(todoLabel) {
-      this.ToDoItems.push({id:uniqueId('todo-'), done: true, label: todoLabel})
+    addPig(selfIntroduce) {
+      this.Pigs.push({id:uniqueId('pig-'), eat: true, selfIntroduce: selfIntroduce})
     }, 
-    updateDoneStatus(itemId) {
-      const todoUpdate = this.ToDoItems.find((item) => item.id === itemId)
-      todoUpdate.done = !todoUpdate.done
+    updateEatStatus(pigId) {
+      const pigUpdate = this.Pigs.find((littlePig) => littlePig.id === pigId)
+      pigUpdate.eat = !pigUpdate.eat
     }
   },
+  //实时计算正在吃饭的小猪数量
   computed: {
-      listFinished() {
-        const finishedItems = this.ToDoItems.filter((item) => item.done).length
-        return `${finishedItems} out of ${this.ToDoItems.length} items completed.`
+      listEatting() {
+        const eattingPigs = this.Pigs.filter((pig) => pig.eat).length
+        return `${eattingPigs} out of ${this.Pigs.length} pigs is eatting.`
       }
     }
 }
