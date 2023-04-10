@@ -5,6 +5,7 @@
     <h2 id="list-finished">{{listFinished}}</h2>
     <ul aria-labelledby="list-finished" class="stack-large">
       <li v-for="item in ToDoItems" :key="item.id">
+         <!--  @checkbox-changed: catch the child event and trigger target method -->
         <to-do-item
           :label="item.label"
           :done="item.done"

@@ -63,7 +63,7 @@
         },
         methods: {
             itemEdited(newLabel) {
-                //tell parent a named event occur and deliver a attribute
+                //$emit：tell parent a named event occur and deliver a attribute
                 this.$emit('item-edited', newLabel);
                 this.isEditing = false;
             },
